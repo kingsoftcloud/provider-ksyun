@@ -13,7 +13,7 @@ import (
 
 // Package type metadata.
 const (
-	Group   = "template.upbound.io"
+	Group   = "ksyun.kingsoftcloud.io"
 	Version = "v1beta1"
 )
 

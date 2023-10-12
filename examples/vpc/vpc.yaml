@@ -1,0 +1,8 @@
+apiVersion: vpc.kingsoftcloud.io/v1alpha1
+kind: VPC
+metadata:
+  name: example-vpc-1
+spec:
+  forProvider:
+    cidrBlock: "10.1.0.0/16"
+    vpcName: "test-crossplane-vpc"

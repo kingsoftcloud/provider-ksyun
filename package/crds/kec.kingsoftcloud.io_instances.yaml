@@ -1,0 +1,834 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.3
+  creationTimestamp: null
+  name: instances.kec.kingsoftcloud.io
+spec:
+  group: kec.kingsoftcloud.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - ksyun
+    kind: Instance
+    listKind: InstanceList
+    plural: instances
+    singular: instance
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Instance is the Schema for the Instances API. <no value>
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: InstanceSpec defines the desired state of Instance
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: 'DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource. This field is planned to be deprecated
+                  in favor of the ManagementPolicy field in a future release. Currently,
+                  both could be set independently and non-default values would be
+                  honored if the feature flag is enabled. See the design doc for more
+                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  autoCreateEbs:
+                    description: Whether to create EBS volumes from snapshots in the
+                      custom image, default is false.
+                    type: boolean
+                  chargeType:
+                    description: charge type of the instance.
+                    type: string
+                  dataDiskGb:
+                    description: The size of the local SSD disk.
+                    type: number
+                  dataDisks:
+                    items:
+                      properties:
+                        deleteWithInstance:
+                          description: Delete this data disk when the instance is
+                            destroyed. It only works on EBS disk.
+                          type: boolean
+                        diskSize:
+                          description: 'Data disk size. value range: [10, 16000].'
+                          type: number
+                        diskSnapshotId:
+                          description: When the cloud disk opens, the snapshot id
+                            is entered.
+                          type: string
+                        diskType:
+                          description: Data disk type.
+                          type: string
+                      type: object
+                    type: array
+                  dataGuardId:
+                    description: Add instance being created to a disaster tolerance
+                      group. It will be quit the disaster tolerance group, if this
+                      field change to null.
+                    type: string
+                  dataGuardIdRef:
+                    description: Reference to a DataGuardGroup in kec to populate
+                      dataGuardId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  dataGuardIdSelector:
+                    description: Selector for a DataGuardGroup in kec to populate
+                      dataGuardId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  dns1:
+                    description: DNS1 of the primary network interface.
+                    type: string
+                  dns2:
+                    description: DNS2 of the primary network interface.
+                    type: string
+                  forceDelete:
+                    description: Indicate whether to delete instance directly or not.
+                    type: boolean
+                  forceReinstallSystem:
+                    description: Indicate whether to reinstall system.
+                    type: boolean
+                  hostName:
+                    description: The hostname of the instance. only effective when
+                      image support cloud-init.
+                    type: string
+                  iamRoleName:
+                    description: name of iam role.
+                    type: string
+                  imageId:
+                    description: The ID for the image to use for the instance.
+                    type: string
+                  instanceName:
+                    description: The name of instance, which contains 2-64 characters
+                      and only support Chinese, English, numbers.
+                    type: string
+                  instancePasswordSecretRef:
+                    description: Password to an instance is a string of 8 to 32 characters.
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
+                  instanceStatus:
+                    description: The state of instance.
+                    type: string
+                  instanceType:
+                    description: 'The type of instance to start. <br> - NOTE: it''s
+                      may trigger this instance to power off, if instance type will
+                      be demotion.'
+                    type: string
+                  keepImageLogin:
+                    description: Keep the initial settings of the custom image.
+                    type: boolean
+                  keyId:
+                    description: The certificate id of the instance.
+                    items:
+                      type: string
+                    type: array
+                  localVolumeSnapshotId:
+                    description: When the local data disk opens, the snapshot id is
+                      entered.
+                    type: string
+                  privateIpAddress:
+                    description: Instance private IP address can be specified when
+                      you creating new instance.
+                    type: string
+                  projectId:
+                    description: The project instance belongs to.
+                    type: number
+                  purchaseTime:
+                    description: The duration that you will buy the resource.
+                    type: number
+                  securityGroupId:
+                    description: Security Group to associate with.
+                    items:
+                      type: string
+                    type: array
+                  securityGroupIdRefs:
+                    description: References to SecurityGroup in vpc to populate securityGroupId.
+                    items:
+                      description: A Reference to a named object.
+                      properties:
+                        name:
+                          description: Name of the referenced object.
+                          type: string
+                        policy:
+                          description: Policies for referencing.
+                          properties:
+                            resolution:
+                              default: Required
+                              description: Resolution specifies whether resolution
+                                of this reference is required. The default is 'Required',
+                                which means the reconcile will fail if the reference
+                                cannot be resolved. 'Optional' means this reference
+                                will be a no-op if it cannot be resolved.
+                              enum:
+                              - Required
+                              - Optional
+                              type: string
+                            resolve:
+                              description: Resolve specifies when this reference should
+                                be resolved. The default is 'IfNotPresent', which
+                                will attempt to resolve the reference only when the
+                                corresponding field is not present. Use 'Always' to
+                                resolve the reference on every reconcile.
+                              enum:
+                              - Always
+                              - IfNotPresent
+                              type: string
+                          type: object
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  securityGroupIdSelector:
+                    description: Selector for a list of SecurityGroup in vpc to populate
+                      securityGroupId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  sriovNetSupport:
+                    description: whether support networking enhancement.
+                    type: string
+                  subnetId:
+                    description: The ID of subnet. the instance will use the subnet
+                      in the current region.
+                    type: string
+                  subnetIdRef:
+                    description: Reference to a Subnet in vpc to populate subnetId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  subnetIdSelector:
+                    description: Selector for a Subnet in vpc to populate subnetId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  systemDisk:
+                    items:
+                      properties:
+                        diskSize:
+                          description: 'The size of the data disk. value range: [20,
+                            500].'
+                          type: number
+                        diskType:
+                          description: System disk type. `Local_SSD`, Local SSD disk.
+                            `SSD3.0`, The SSD cloud disk. `EHDD`, The EHDD cloud disk,
+                            `ESSD_SYSTEM_PL0`, The x7 machine type ESSD disk, `ESSD_SYSTEM_PL1`,
+                            The x7 machine type ESSD disk, `ESSD_SYSTEM_PL2`, The
+                            x7 machine type ESSD disk.
+                          type: string
+                      type: object
+                    type: array
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: the tags of the resource.
+                    type: object
+                  userData:
+                    description: The user data to be specified into this instance.
+                      Must be encrypted in base64 format and limited in 16 KB. only
+                      effective when image support cloud-init.
+                    type: string
+                type: object
+              managementPolicy:
+                default: FullControl
+                description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. ManagementPolicy
+                  specifies the level of control Crossplane has over the managed external
+                  resource. This field is planned to replace the DeletionPolicy field
+                  in a future release. Currently, both could be set independently
+                  and non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - FullControl
+                - ObserveOnly
+                - OrphanOnDelete
+                type: string
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: chargeType is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.chargeType)
+            - message: imageId is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.imageId)
+          status:
+            description: InstanceStatus defines the observed state of Instance.
+            properties:
+              atProvider:
+                properties:
+                  autoCreateEbs:
+                    description: Whether to create EBS volumes from snapshots in the
+                      custom image, default is false.
+                    type: boolean
+                  chargeType:
+                    description: charge type of the instance.
+                    type: string
+                  dataDiskGb:
+                    description: The size of the local SSD disk.
+                    type: number
+                  dataDisks:
+                    items:
+                      properties:
+                        deleteWithInstance:
+                          description: Delete this data disk when the instance is
+                            destroyed. It only works on EBS disk.
+                          type: boolean
+                        diskId:
+                          description: ID of the disk.
+                          type: string
+                        diskSize:
+                          description: 'Data disk size. value range: [10, 16000].'
+                          type: number
+                        diskSnapshotId:
+                          description: When the cloud disk opens, the snapshot id
+                            is entered.
+                          type: string
+                        diskType:
+                          description: Data disk type.
+                          type: string
+                      type: object
+                    type: array
+                  dataGuardId:
+                    description: Add instance being created to a disaster tolerance
+                      group. It will be quit the disaster tolerance group, if this
+                      field change to null.
+                    type: string
+                  dns1:
+                    description: DNS1 of the primary network interface.
+                    type: string
+                  dns2:
+                    description: DNS2 of the primary network interface.
+                    type: string
+                  extensionNetworkInterface:
+                    description: extension network interface information.
+                    items:
+                      properties:
+                        networkInterfaceId:
+                          type: string
+                      type: object
+                    type: array
+                  forceDelete:
+                    description: Indicate whether to delete instance directly or not.
+                    type: boolean
+                  forceReinstallSystem:
+                    description: Indicate whether to reinstall system.
+                    type: boolean
+                  hasModifyKeys:
+                    description: whether the certificate key has modified.
+                    type: boolean
+                  hasModifyPassword:
+                    description: whether the password has modified.
+                    type: boolean
+                  hasModifySystemDisk:
+                    description: whether the system disk has modified.
+                    type: boolean
+                  hostName:
+                    description: The hostname of the instance. only effective when
+                      image support cloud-init.
+                    type: string
+                  iamRoleName:
+                    description: name of iam role.
+                    type: string
+                  id:
+                    type: string
+                  imageId:
+                    description: The ID for the image to use for the instance.
+                    type: string
+                  instanceId:
+                    description: ID of the instance.
+                    type: string
+                  instanceName:
+                    description: The name of instance, which contains 2-64 characters
+                      and only support Chinese, English, numbers.
+                    type: string
+                  instanceStatus:
+                    description: The state of instance.
+                    type: string
+                  instanceType:
+                    description: 'The type of instance to start. <br> - NOTE: it''s
+                      may trigger this instance to power off, if instance type will
+                      be demotion.'
+                    type: string
+                  keepImageLogin:
+                    description: Keep the initial settings of the custom image.
+                    type: boolean
+                  keyId:
+                    description: The certificate id of the instance.
+                    items:
+                      type: string
+                    type: array
+                  localVolumeSnapshotId:
+                    description: When the local data disk opens, the snapshot id is
+                      entered.
+                    type: string
+                  networkInterfaceId:
+                    description: ID of the network interface.
+                    type: string
+                  privateIpAddress:
+                    description: Instance private IP address can be specified when
+                      you creating new instance.
+                    type: string
+                  projectId:
+                    description: The project instance belongs to.
+                    type: number
+                  purchaseTime:
+                    description: The duration that you will buy the resource.
+                    type: number
+                  securityGroupId:
+                    description: Security Group to associate with.
+                    items:
+                      type: string
+                    type: array
+                  sriovNetSupport:
+                    description: whether support networking enhancement.
+                    type: string
+                  subnetId:
+                    description: The ID of subnet. the instance will use the subnet
+                      in the current region.
+                    type: string
+                  systemDisk:
+                    items:
+                      properties:
+                        diskSize:
+                          description: 'The size of the data disk. value range: [20,
+                            500].'
+                          type: number
+                        diskType:
+                          description: System disk type. `Local_SSD`, Local SSD disk.
+                            `SSD3.0`, The SSD cloud disk. `EHDD`, The EHDD cloud disk,
+                            `ESSD_SYSTEM_PL0`, The x7 machine type ESSD disk, `ESSD_SYSTEM_PL1`,
+                            The x7 machine type ESSD disk, `ESSD_SYSTEM_PL2`, The
+                            x7 machine type ESSD disk.
+                          type: string
+                      type: object
+                    type: array
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: the tags of the resource.
+                    type: object
+                  userData:
+                    description: The user data to be specified into this instance.
+                      Must be encrypted in base64 format and limited in 16 KB. only
+                      effective when image support cloud-init.
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
