@@ -1,0 +1,12 @@
+apiVersion: vpc.kingsoftcloud.io/v1alpha1
+kind: Subnet
+metadata:
+  name: example-subnet
+spec:
+  forProvider:
+    availabilityZone: "cn-beijing-6b"
+    cidrBlock: "10.1.2.0/24"
+    subnetName: "test-crossplane-subnet"
+    subnetType: "Normal"
+    vpcIdRef:
+      name: "example-vpc-1"

@@ -10,7 +10,23 @@ import "github.com/upbound/upjet/pkg/config"
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"null_resource": config.IdentifierFromProvider,
+
+	// Vpc
+	"ksyun_vpc":                  config.NameAsIdentifier,
+	"ksyun_subnet":               config.NameAsIdentifier,
+	"ksyun_security_group":       config.NameAsIdentifier,
+	"ksyun_security_group_entry": config.NameAsIdentifier,
+
+	// Instance(KEC)
+	"ksyun_instance":                         config.NameAsIdentifier,
+	"ksyun_data_guard_group":                 config.NameAsIdentifier,
+	"ksyun_kec_network_interface_attachment": config.NameAsIdentifier,
+
+	// Eip
+	"ksyun_eip":           config.NameAsIdentifier,
+	"ksyun_eip_associate": config.NameAsIdentifier,
+	"ksyun_bws":           config.NameAsIdentifier,
+	"ksyun_bws_associate": config.NameAsIdentifier,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

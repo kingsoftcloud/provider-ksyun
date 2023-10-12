@@ -1,0 +1,16 @@
+apiVersion: kec.kingsoftcloud.io/v1alpha1
+kind: Instance
+metadata:
+  name: example-kec-1
+spec:
+  forProvider:
+    instanceName: "test-crossplane-kec-rename"
+    imageId: "IMG-05f198b3-9df6-4f94-a3e3-dcee4b48c4aa"
+#    instancePassword: "QAZwsxedc123!"
+    instanceType: "N3.2B"
+    chargeType: "Daily"
+    purchaseTime: 1
+    subnetIdRef:
+      name: "example-kec-subnet-1"
+    securityGroupIdRefs:
+      - name: "example-kec-security-group-1"

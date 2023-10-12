@@ -1,0 +1,12 @@
+apiVersion: vpc.kingsoftcloud.io/v1alpha1
+kind: Subnet
+metadata:
+  name: example-kec-subnet-1
+spec:
+  forProvider:
+    availabilityZone: "cn-guangzhou-1a"
+    cidrBlock: "10.1.2.0/24"
+    subnetName: "test-crossplane-kec-subnet"
+    subnetType: "Normal"
+    vpcIdRef:
+      name: "example-kec-vpc-1"
