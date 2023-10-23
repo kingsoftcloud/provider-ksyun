@@ -3,4 +3,4 @@ kind: Provider
 metadata:
   name: provider-ksyun
 spec:
-  package: kingsoftcloud/provider-ksyun:v0.1.0
+  package: kingsoftcloud/provider-ksyun:v0.1.1

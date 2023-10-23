@@ -13,6 +13,48 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// ResolveReferences of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.AttachVolumeID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.AttachVolumeIDRef,
+		Selector:     mg.Spec.ForProvider.AttachVolumeIDSelector,
+		To: reference.To{
+			List:    &VolumeList{},
+			Managed: &Volume{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.AttachVolumeID")
+	}
+	mg.Spec.ForProvider.AttachVolumeID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.AttachVolumeIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.AutoSnapshotPolicyID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.AutoSnapshotPolicyIDRef,
+		Selector:     mg.Spec.ForProvider.AutoSnapshotPolicyIDSelector,
+		To: reference.To{
+			List:    &AutoSnapshotPolicyList{},
+			Managed: &AutoSnapshotPolicy{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.AutoSnapshotPolicyID")
+	}
+	mg.Spec.ForProvider.AutoSnapshotPolicyID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.AutoSnapshotPolicyIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this Instance.
 func (mg *Instance) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
