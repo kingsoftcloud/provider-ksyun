@@ -15,7 +15,6 @@ import (
 	v1alpha1eip "github.com/kingsoftcloud/provider-ksyun/apis/eip/v1alpha1"
 	v1alpha1kcm "github.com/kingsoftcloud/provider-ksyun/apis/kcm/v1alpha1"
 	v1alpha1kec "github.com/kingsoftcloud/provider-ksyun/apis/kec/v1alpha1"
-	v1alpha1ksyun "github.com/kingsoftcloud/provider-ksyun/apis/ksyun/v1alpha1"
 	v1alpha1slb "github.com/kingsoftcloud/provider-ksyun/apis/slb/v1alpha1"
 	v1alpha1apis "github.com/kingsoftcloud/provider-ksyun/apis/v1alpha1"
 	v1beta1 "github.com/kingsoftcloud/provider-ksyun/apis/v1beta1"
@@ -30,7 +29,6 @@ func init() {
 		v1alpha1eip.SchemeBuilder.AddToScheme,
 		v1alpha1kcm.SchemeBuilder.AddToScheme,
 		v1alpha1kec.SchemeBuilder.AddToScheme,
-		v1alpha1ksyun.SchemeBuilder.AddToScheme,
 		v1alpha1slb.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,

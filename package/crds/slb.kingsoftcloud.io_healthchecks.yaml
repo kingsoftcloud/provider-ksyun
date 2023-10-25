@@ -89,7 +89,7 @@ spec:
                     description: The id of the listener.
                     type: string
                   listenerIdRef:
-                    description: Reference to a Alb in slb to populate listenerId.
+                    description: Reference to a LbListener in slb to populate listenerId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -123,7 +123,7 @@ spec:
                     - name
                     type: object
                   listenerIdSelector:
-                    description: Selector for a Alb in slb to populate listenerId.
+                    description: Selector for a LbListener in slb to populate listenerId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the

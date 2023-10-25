@@ -7,8 +7,8 @@ package v1alpha1
 
 import resource "github.com/crossplane/crossplane-runtime/pkg/resource"
 
-// GetItems of this ListenerCertGroupList.
-func (l *ListenerCertGroupList) GetItems() []resource.Managed {
+// GetItems of this AlbList.
+func (l *AlbList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -16,8 +16,8 @@ func (l *ListenerCertGroupList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this ListenerList.
-func (l *ListenerList) GetItems() []resource.Managed {
+// GetItems of this AlbListenerCertGroupList.
+func (l *AlbListenerCertGroupList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -25,8 +25,17 @@ func (l *ListenerList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this RuleGroupList.
-func (l *RuleGroupList) GetItems() []resource.Managed {
+// GetItems of this AlbListenerList.
+func (l *AlbListenerList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this AlbRuleGroupList.
+func (l *AlbRuleGroupList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

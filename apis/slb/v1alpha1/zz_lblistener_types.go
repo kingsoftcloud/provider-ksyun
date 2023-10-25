@@ -182,15 +182,15 @@ type LbListenerParameters struct {
 	LoadBalancerACLIDSelector *v1.Selector `json:"loadBalancerAclIdSelector,omitempty" tf:"-"`
 
 	// The ID of the LB.
-	// +crossplane:generate:reference:type=github.com/kingsoftcloud/provider-ksyun/apis/slb/v1alpha1.LB
+	// +crossplane:generate:reference:type=github.com/kingsoftcloud/provider-ksyun/apis/slb/v1alpha1.Lb
 	// +kubebuilder:validation:Optional
 	LoadBalancerID *string `json:"loadBalancerId,omitempty" tf:"load_balancer_id,omitempty"`
 
-	// Reference to a LB in slb to populate loadBalancerId.
+	// Reference to a Lb in slb to populate loadBalancerId.
 	// +kubebuilder:validation:Optional
 	LoadBalancerIDRef *v1.Reference `json:"loadBalancerIdRef,omitempty" tf:"-"`
 
-	// Selector for a LB in slb to populate loadBalancerId.
+	// Selector for a Lb in slb to populate loadBalancerId.
 	// +kubebuilder:validation:Optional
 	LoadBalancerIDSelector *v1.Selector `json:"loadBalancerIdSelector,omitempty" tf:"-"`
 

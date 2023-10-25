@@ -12,7 +12,6 @@ func Configure(p *config.Provider) {
 		// this resource, which would be "ksyun"
 		r.ShortGroup = shortGroup
 		r.ExternalName = config.IdentifierFromProvider
-		r.Kind = "LB"
 
 		r.References["vpc_id"] = config.Reference{
 			Type: "github.com/kingsoftcloud/provider-ksyun/apis/vpc/v1alpha1.VPC",
@@ -29,7 +28,7 @@ func Configure(p *config.Provider) {
 		r.Kind = "Healthcheck"
 
 		r.References["listener_id"] = config.Reference{
-			Type: "github.com/kingsoftcloud/provider-ksyun/apis/slb/v1alpha1.Alb",
+			Type: "github.com/kingsoftcloud/provider-ksyun/apis/slb/v1alpha1.LbListener",
 		}
 
 	})

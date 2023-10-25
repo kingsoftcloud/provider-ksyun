@@ -27,15 +27,15 @@ type AutoSnapshotVolumeAssociationObservation struct {
 type AutoSnapshotVolumeAssociationParameters struct {
 
 	// The id of the volume.
-	// +crossplane:generate:reference:type=github.com/kingsoftcloud/provider-ksyun/apis/kec/v1alpha1.Volume
+	// +crossplane:generate:reference:type=github.com/kingsoftcloud/provider-ksyun/apis/ebs/v1alpha1.Volume
 	// +kubebuilder:validation:Optional
 	AttachVolumeID *string `json:"attachVolumeId,omitempty" tf:"attach_volume_id,omitempty"`
 
-	// Reference to a Volume in kec to populate attachVolumeId.
+	// Reference to a Volume in ebs to populate attachVolumeId.
 	// +kubebuilder:validation:Optional
 	AttachVolumeIDRef *v1.Reference `json:"attachVolumeIdRef,omitempty" tf:"-"`
 
-	// Selector for a Volume in kec to populate attachVolumeId.
+	// Selector for a Volume in ebs to populate attachVolumeId.
 	// +kubebuilder:validation:Optional
 	AttachVolumeIDSelector *v1.Selector `json:"attachVolumeIdSelector,omitempty" tf:"-"`
 

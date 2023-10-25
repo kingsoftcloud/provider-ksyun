@@ -5,7 +5,7 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: listenercertgroups.alb.kingsoftcloud.io
+  name: albs.alb.kingsoftcloud.io
 spec:
   group: alb.kingsoftcloud.io
   names:
@@ -13,10 +13,10 @@ spec:
     - crossplane
     - managed
     - ksyun
-    kind: ListenerCertGroup
-    listKind: ListenerCertGroupList
-    plural: listenercertgroups
-    singular: listenercertgroup
+    kind: Alb
+    listKind: AlbList
+    plural: albs
+    singular: alb
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ListenerCertGroup is the Schema for the ListenerCertGroups API.
-          <no value>
+        description: Alb is the Schema for the Albs API. <no value>
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ListenerCertGroupSpec defines the desired state of ListenerCertGroup
+            description: AlbSpec defines the desired state of Alb
             properties:
               deletionPolicy:
                 default: Delete
@@ -68,19 +67,119 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  albListenerId:
-                    description: The ID of the ALB Listener.
+                  albName:
+                    description: The name of the ALB.
                     type: string
-                  certificate:
+                  albType:
+                    description: The type of the ALB, valid values:'public', 'internal'.
+                    type: string
+                  albVersion:
+                    description: The version of the ALB. valid values:'standard',
+                      'advanced'.
+                    type: string
+                  chargeType:
+                    description: 'The charge type, valid values: ''PrePaidByHourUsage''.'
+                    type: string
+                  enabledLog:
+                    description: Whether log is enabled or not. Specific `klog_info`
+                      field when `enabled_log` is true.
+                    type: boolean
+                  ipVersion:
+                    description: IP version, 'ipv4' or 'ipv6'.
+                    type: string
+                  klogInfo:
                     items:
                       properties:
-                        certificateId:
-                          description: The ID of the certificate.
+                        logPoolName:
+                          description: log pool name.
                           type: string
-                      required:
-                      - certificateId
+                        projectName:
+                          description: log project name.
+                          type: string
                       type: object
                     type: array
+                  projectId:
+                    description: The ID of the project.
+                    type: string
+                  state:
+                    description: The state of the ALB, Valid Values:'start', 'stop'.
+                    type: string
+                  vpcId:
+                    description: The ID of the VPC.
+                    type: string
+                  vpcIdRef:
+                    description: Reference to a VPC in vpc to populate vpcId.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  vpcIdSelector:
+                    description: Selector for a VPC in vpc to populate vpcId.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
                 type: object
               managementPolicy:
                 default: FullControl
@@ -269,40 +368,70 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: albListenerId is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.albListenerId)
+            - message: albType is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.albType)
+            - message: albVersion is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.albVersion)
+            - message: chargeType is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.chargeType)
           status:
-            description: ListenerCertGroupStatus defines the observed state of ListenerCertGroup.
+            description: AlbStatus defines the observed state of Alb.
             properties:
               atProvider:
                 properties:
-                  albListenerCertGroupId:
-                    description: The ID of the ALB Listener Cert Group.
+                  albName:
+                    description: The name of the ALB.
                     type: string
-                  albListenerId:
-                    description: The ID of the ALB Listener.
+                  albType:
+                    description: The type of the ALB, valid values:'public', 'internal'.
                     type: string
-                  certificate:
+                  albVersion:
+                    description: The version of the ALB. valid values:'standard',
+                      'advanced'.
+                    type: string
+                  chargeType:
+                    description: 'The charge type, valid values: ''PrePaidByHourUsage''.'
+                    type: string
+                  createTime:
+                    description: The creation time.
+                    type: string
+                  enabledLog:
+                    description: Whether log is enabled or not. Specific `klog_info`
+                      field when `enabled_log` is true.
+                    type: boolean
+                  id:
+                    type: string
+                  ipVersion:
+                    description: IP version, 'ipv4' or 'ipv6'.
+                    type: string
+                  klogInfo:
                     items:
                       properties:
-                        certAuthority:
-                          description: certificate authority.
+                        accountId:
+                          description: account id.
                           type: string
-                        certificateId:
-                          description: The ID of the certificate.
+                        logPoolName:
+                          description: log pool name.
                           type: string
-                        certificateName:
-                          description: The name of the certificate.
-                          type: string
-                        commonName:
-                          description: The common name on the certificate.
-                          type: string
-                        expireTime:
-                          description: The expire time of the certificate.
+                        projectName:
+                          description: log project name.
                           type: string
                       type: object
                     type: array
-                  id:
+                  projectId:
+                    description: The ID of the project.
+                    type: string
+                  publicIp:
+                    description: The public IP address.
+                    type: string
+                  state:
+                    description: The state of the ALB, Valid Values:'start', 'stop'.
+                    type: string
+                  status:
+                    description: The status of the ALB.
+                    type: string
+                  vpcId:
+                    description: The ID of the VPC.
                     type: string
                 type: object
               conditions:

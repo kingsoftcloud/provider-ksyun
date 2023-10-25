@@ -9,9 +9,10 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
-	listener "github.com/kingsoftcloud/provider-ksyun/internal/controller/alb/listener"
-	listenercertgroup "github.com/kingsoftcloud/provider-ksyun/internal/controller/alb/listenercertgroup"
-	rulegroup "github.com/kingsoftcloud/provider-ksyun/internal/controller/alb/rulegroup"
+	alb "github.com/kingsoftcloud/provider-ksyun/internal/controller/alb/alb"
+	alblistener "github.com/kingsoftcloud/provider-ksyun/internal/controller/alb/alblistener"
+	alblistenercertgroup "github.com/kingsoftcloud/provider-ksyun/internal/controller/alb/alblistenercertgroup"
+	albrulegroup "github.com/kingsoftcloud/provider-ksyun/internal/controller/alb/albrulegroup"
 	snapshot "github.com/kingsoftcloud/provider-ksyun/internal/controller/ebs/snapshot"
 	volume "github.com/kingsoftcloud/provider-ksyun/internal/controller/ebs/volume"
 	volumeattach "github.com/kingsoftcloud/provider-ksyun/internal/controller/ebs/volumeattach"
@@ -25,7 +26,6 @@ import (
 	dataguardgroup "github.com/kingsoftcloud/provider-ksyun/internal/controller/kec/dataguardgroup"
 	instance "github.com/kingsoftcloud/provider-ksyun/internal/controller/kec/instance"
 	kecnetworkinterfaceattachment "github.com/kingsoftcloud/provider-ksyun/internal/controller/kec/kecnetworkinterfaceattachment"
-	alb "github.com/kingsoftcloud/provider-ksyun/internal/controller/ksyun/alb"
 	providerconfig "github.com/kingsoftcloud/provider-ksyun/internal/controller/providerconfig"
 	healthcheck "github.com/kingsoftcloud/provider-ksyun/internal/controller/slb/healthcheck"
 	lb "github.com/kingsoftcloud/provider-ksyun/internal/controller/slb/lb"
@@ -57,9 +57,10 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		listener.Setup,
-		listenercertgroup.Setup,
-		rulegroup.Setup,
+		alb.Setup,
+		alblistener.Setup,
+		alblistenercertgroup.Setup,
+		albrulegroup.Setup,
 		snapshot.Setup,
 		volume.Setup,
 		volumeattach.Setup,
@@ -73,7 +74,6 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		dataguardgroup.Setup,
 		instance.Setup,
 		kecnetworkinterfaceattachment.Setup,
-		alb.Setup,
 		providerconfig.Setup,
 		healthcheck.Setup,
 		lb.Setup,

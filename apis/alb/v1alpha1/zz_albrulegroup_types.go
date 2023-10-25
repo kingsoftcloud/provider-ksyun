@@ -33,7 +33,7 @@ type ALBRuleSetParameters struct {
 	ALBRuleValue *string `json:"albRuleValue" tf:"alb_rule_value,omitempty"`
 }
 
-type RuleGroupObservation struct {
+type AlbRuleGroupObservation struct {
 
 	// The ID of the ALB listener.
 	ALBListenerID *string `json:"albListenerId,omitempty" tf:"alb_listener_id,omitempty"`
@@ -91,11 +91,20 @@ type RuleGroupObservation struct {
 	UnhealthyThreshold *float64 `json:"unhealthyThreshold,omitempty" tf:"unhealthy_threshold,omitempty"`
 }
 
-type RuleGroupParameters struct {
+type AlbRuleGroupParameters struct {
 
 	// The ID of the ALB listener.
+	// +crossplane:generate:reference:type=github.com/kingsoftcloud/provider-ksyun/apis/alb/v1alpha1.AlbListener
 	// +kubebuilder:validation:Optional
 	ALBListenerID *string `json:"albListenerId,omitempty" tf:"alb_listener_id,omitempty"`
+
+	// Reference to a AlbListener in alb to populate albListenerId.
+	// +kubebuilder:validation:Optional
+	ALBListenerIDRef *v1.Reference `json:"albListenerIdRef,omitempty" tf:"-"`
+
+	// Selector for a AlbListener in alb to populate albListenerId.
+	// +kubebuilder:validation:Optional
+	ALBListenerIDSelector *v1.Selector `json:"albListenerIdSelector,omitempty" tf:"-"`
 
 	// The name of the ALB rule group.
 	// +kubebuilder:validation:Optional
@@ -105,8 +114,17 @@ type RuleGroupParameters struct {
 	ALBRuleSet []ALBRuleSetParameters `json:"albRuleSet,omitempty" tf:"alb_rule_set,omitempty"`
 
 	// The ID of the backend server group.
+	// +crossplane:generate:reference:type=github.com/kingsoftcloud/provider-ksyun/apis/slb/v1alpha1.LbBackendServerGroup
 	// +kubebuilder:validation:Optional
 	BackendServerGroupID *string `json:"backendServerGroupId,omitempty" tf:"backend_server_group_id,omitempty"`
+
+	// Reference to a LbBackendServerGroup in slb to populate backendServerGroupId.
+	// +kubebuilder:validation:Optional
+	BackendServerGroupIDRef *v1.Reference `json:"backendServerGroupIdRef,omitempty" tf:"-"`
+
+	// Selector for a LbBackendServerGroup in slb to populate backendServerGroupId.
+	// +kubebuilder:validation:Optional
+	BackendServerGroupIDSelector *v1.Selector `json:"backendServerGroupIdSelector,omitempty" tf:"-"`
 
 	// The name of cookie. Should set it value, when `listener_sync` is off and `cookie_type` is `RewriteCookie`.
 	// +kubebuilder:validation:Optional
@@ -161,55 +179,53 @@ type RuleGroupParameters struct {
 	UnhealthyThreshold *float64 `json:"unhealthyThreshold,omitempty" tf:"unhealthy_threshold,omitempty"`
 }
 
-// RuleGroupSpec defines the desired state of RuleGroup
-type RuleGroupSpec struct {
+// AlbRuleGroupSpec defines the desired state of AlbRuleGroup
+type AlbRuleGroupSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     RuleGroupParameters `json:"forProvider"`
+	ForProvider     AlbRuleGroupParameters `json:"forProvider"`
 }
 
-// RuleGroupStatus defines the observed state of RuleGroup.
-type RuleGroupStatus struct {
+// AlbRuleGroupStatus defines the observed state of AlbRuleGroup.
+type AlbRuleGroupStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        RuleGroupObservation `json:"atProvider,omitempty"`
+	AtProvider        AlbRuleGroupObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// RuleGroup is the Schema for the RuleGroups API. <no value>
+// AlbRuleGroup is the Schema for the AlbRuleGroups API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,ksyun}
-type RuleGroup struct {
+type AlbRuleGroup struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.albListenerId)",message="albListenerId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.albRuleSet)",message="albRuleSet is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.backendServerGroupId)",message="backendServerGroupId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.listenerSync)",message="listenerSync is a required parameter"
-	Spec   RuleGroupSpec   `json:"spec"`
-	Status RuleGroupStatus `json:"status,omitempty"`
+	Spec   AlbRuleGroupSpec   `json:"spec"`
+	Status AlbRuleGroupStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// RuleGroupList contains a list of RuleGroups
-type RuleGroupList struct {
+// AlbRuleGroupList contains a list of AlbRuleGroups
+type AlbRuleGroupList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []RuleGroup `json:"items"`
+	Items           []AlbRuleGroup `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	RuleGroup_Kind             = "RuleGroup"
-	RuleGroup_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: RuleGroup_Kind}.String()
-	RuleGroup_KindAPIVersion   = RuleGroup_Kind + "." + CRDGroupVersion.String()
-	RuleGroup_GroupVersionKind = CRDGroupVersion.WithKind(RuleGroup_Kind)
+	AlbRuleGroup_Kind             = "AlbRuleGroup"
+	AlbRuleGroup_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: AlbRuleGroup_Kind}.String()
+	AlbRuleGroup_KindAPIVersion   = AlbRuleGroup_Kind + "." + CRDGroupVersion.String()
+	AlbRuleGroup_GroupVersionKind = CRDGroupVersion.WithKind(AlbRuleGroup_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&RuleGroup{}, &RuleGroupList{})
+	SchemeBuilder.Register(&AlbRuleGroup{}, &AlbRuleGroupList{})
 }

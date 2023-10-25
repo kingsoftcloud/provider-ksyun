@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type ALBObservation struct {
+type AlbObservation struct {
 
 	// The name of the ALB.
 	ALBName *string `json:"albName,omitempty" tf:"alb_name,omitempty"`
@@ -56,7 +56,7 @@ type ALBObservation struct {
 	VPCID *string `json:"vpcId,omitempty" tf:"vpc_id,omitempty"`
 }
 
-type ALBParameters struct {
+type AlbParameters struct {
 
 	// The name of the ALB.
 	// +kubebuilder:validation:Optional
@@ -94,8 +94,17 @@ type ALBParameters struct {
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
 	// The ID of the VPC.
+	// +crossplane:generate:reference:type=github.com/kingsoftcloud/provider-ksyun/apis/vpc/v1alpha1.VPC
 	// +kubebuilder:validation:Optional
 	VPCID *string `json:"vpcId,omitempty" tf:"vpc_id,omitempty"`
+
+	// Reference to a VPC in vpc to populate vpcId.
+	// +kubebuilder:validation:Optional
+	VPCIDRef *v1.Reference `json:"vpcIdRef,omitempty" tf:"-"`
+
+	// Selector for a VPC in vpc to populate vpcId.
+	// +kubebuilder:validation:Optional
+	VPCIDSelector *v1.Selector `json:"vpcIdSelector,omitempty" tf:"-"`
 }
 
 type KlogInfoObservation struct {
@@ -121,55 +130,54 @@ type KlogInfoParameters struct {
 	ProjectName *string `json:"projectName,omitempty" tf:"project_name,omitempty"`
 }
 
-// ALBSpec defines the desired state of ALB
-type ALBSpec struct {
+// AlbSpec defines the desired state of Alb
+type AlbSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     ALBParameters `json:"forProvider"`
+	ForProvider     AlbParameters `json:"forProvider"`
 }
 
-// ALBStatus defines the observed state of ALB.
-type ALBStatus struct {
+// AlbStatus defines the observed state of Alb.
+type AlbStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        ALBObservation `json:"atProvider,omitempty"`
+	AtProvider        AlbObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// ALB is the Schema for the ALBs API. <no value>
+// Alb is the Schema for the Albs API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,ksyun}
-type ALB struct {
+type Alb struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.albType)",message="albType is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.albVersion)",message="albVersion is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.chargeType)",message="chargeType is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.vpcId)",message="vpcId is a required parameter"
-	Spec   ALBSpec   `json:"spec"`
-	Status ALBStatus `json:"status,omitempty"`
+	Spec   AlbSpec   `json:"spec"`
+	Status AlbStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// ALBList contains a list of ALBs
-type ALBList struct {
+// AlbList contains a list of Albs
+type AlbList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ALB `json:"items"`
+	Items           []Alb `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	ALB_Kind             = "ALB"
-	ALB_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: ALB_Kind}.String()
-	ALB_KindAPIVersion   = ALB_Kind + "." + CRDGroupVersion.String()
-	ALB_GroupVersionKind = CRDGroupVersion.WithKind(ALB_Kind)
+	Alb_Kind             = "Alb"
+	Alb_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: Alb_Kind}.String()
+	Alb_KindAPIVersion   = Alb_Kind + "." + CRDGroupVersion.String()
+	Alb_GroupVersionKind = CRDGroupVersion.WithKind(Alb_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&ALB{}, &ALBList{})
+	SchemeBuilder.Register(&Alb{}, &AlbList{})
 }

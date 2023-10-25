@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type ListenerObservation struct {
+type AlbListenerObservation struct {
 
 	// The ID of the ALB.
 	ALBID *string `json:"albId,omitempty" tf:"alb_id,omitempty"`
@@ -59,11 +59,20 @@ type ListenerObservation struct {
 	TLSCipherPolicy *string `json:"tlsCipherPolicy,omitempty" tf:"tls_cipher_policy,omitempty"`
 }
 
-type ListenerParameters struct {
+type AlbListenerParameters struct {
 
 	// The ID of the ALB.
+	// +crossplane:generate:reference:type=github.com/kingsoftcloud/provider-ksyun/apis/alb/v1alpha1.Alb
 	// +kubebuilder:validation:Optional
 	ALBID *string `json:"albId,omitempty" tf:"alb_id,omitempty"`
+
+	// Reference to a Alb in alb to populate albId.
+	// +kubebuilder:validation:Optional
+	ALBIDRef *v1.Reference `json:"albIdRef,omitempty" tf:"-"`
+
+	// Selector for a Alb in alb to populate albId.
+	// +kubebuilder:validation:Optional
+	ALBIDSelector *v1.Selector `json:"albIdSelector,omitempty" tf:"-"`
 
 	// The name of the listener.
 	// +kubebuilder:validation:Optional
@@ -143,54 +152,53 @@ type SessionParameters struct {
 	SessionState *string `json:"sessionState,omitempty" tf:"session_state,omitempty"`
 }
 
-// ListenerSpec defines the desired state of Listener
-type ListenerSpec struct {
+// AlbListenerSpec defines the desired state of AlbListener
+type AlbListenerSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     ListenerParameters `json:"forProvider"`
+	ForProvider     AlbListenerParameters `json:"forProvider"`
 }
 
-// ListenerStatus defines the observed state of Listener.
-type ListenerStatus struct {
+// AlbListenerStatus defines the observed state of AlbListener.
+type AlbListenerStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        ListenerObservation `json:"atProvider,omitempty"`
+	AtProvider        AlbListenerObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// Listener is the Schema for the Listeners API. <no value>
+// AlbListener is the Schema for the AlbListeners API. <no value>
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,ksyun}
-type Listener struct {
+type AlbListener struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.albId)",message="albId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.port)",message="port is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.protocol)",message="protocol is a required parameter"
-	Spec   ListenerSpec   `json:"spec"`
-	Status ListenerStatus `json:"status,omitempty"`
+	Spec   AlbListenerSpec   `json:"spec"`
+	Status AlbListenerStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// ListenerList contains a list of Listeners
-type ListenerList struct {
+// AlbListenerList contains a list of AlbListeners
+type AlbListenerList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Listener `json:"items"`
+	Items           []AlbListener `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	Listener_Kind             = "Listener"
-	Listener_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: Listener_Kind}.String()
-	Listener_KindAPIVersion   = Listener_Kind + "." + CRDGroupVersion.String()
-	Listener_GroupVersionKind = CRDGroupVersion.WithKind(Listener_Kind)
+	AlbListener_Kind             = "AlbListener"
+	AlbListener_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: AlbListener_Kind}.String()
+	AlbListener_KindAPIVersion   = AlbListener_Kind + "." + CRDGroupVersion.String()
+	AlbListener_GroupVersionKind = CRDGroupVersion.WithKind(AlbListener_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&Listener{}, &ListenerList{})
+	SchemeBuilder.Register(&AlbListener{}, &AlbListenerList{})
 }

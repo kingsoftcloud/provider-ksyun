@@ -13,6 +13,8 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = shortGroup
 		r.ExternalName = config.IdentifierFromProvider
 
+		r.Kind = "Alb"
+
 		r.References["vpc_id"] = config.Reference{
 			Type: "github.com/kingsoftcloud/provider-ksyun/apis/vpc/v1alpha1.VPC",
 		}
@@ -28,7 +30,7 @@ func Configure(p *config.Provider) {
 		r.Kind = "AlbListener"
 
 		r.References["alb_id"] = config.Reference{
-			Type: "github.com/kingsoftcloud/provider-ksyun/apis/ebs/v1alpha1.Alb",
+			Type: "github.com/kingsoftcloud/provider-ksyun/apis/alb/v1alpha1.Alb",
 		}
 
 	})
@@ -43,7 +45,7 @@ func Configure(p *config.Provider) {
 		r.Kind = "AlbListenerCertGroup"
 
 		r.References["alb_listener_id"] = config.Reference{
-			Type: "github.com/kingsoftcloud/provider-ksyun/apis/ebs/v1alpha1.AlbListener",
+			Type: "github.com/kingsoftcloud/provider-ksyun/apis/alb/v1alpha1.AlbListener",
 		}
 	})
 	p.AddResourceConfigurator("ksyun_alb_rule_group", func(r *config.Resource) {
@@ -56,10 +58,10 @@ func Configure(p *config.Provider) {
 		r.Kind = "AlbRuleGroup"
 
 		r.References["alb_listener_id"] = config.Reference{
-			Type: "github.com/kingsoftcloud/provider-ksyun/apis/ebs/v1alpha1.AlbListener",
+			Type: "github.com/kingsoftcloud/provider-ksyun/apis/alb/v1alpha1.AlbListener",
 		}
 		r.References["backend_server_group_id"] = config.Reference{
-			Type: "github.com/kingsoftcloud/provider-ksyun/apis/ebs/v1alpha1.LbBackendServerGroup",
+			Type: "github.com/kingsoftcloud/provider-ksyun/apis/slb/v1alpha1.LbBackendServerGroup",
 		}
 	})
 

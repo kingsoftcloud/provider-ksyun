@@ -26,8 +26,8 @@ func (mg *Healthcheck) ResolveReferences(ctx context.Context, c client.Reader) e
 		Reference:    mg.Spec.ForProvider.ListenerIDRef,
 		Selector:     mg.Spec.ForProvider.ListenerIDSelector,
 		To: reference.To{
-			List:    &AlbList{},
-			Managed: &Alb{},
+			List:    &LbListenerList{},
+			Managed: &LbListener{},
 		},
 	})
 	if err != nil {

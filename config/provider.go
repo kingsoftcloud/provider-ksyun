@@ -8,6 +8,7 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/kingsoftcloud/provider-ksyun/config/alb"
 	"github.com/kingsoftcloud/provider-ksyun/config/ebs"
 	"github.com/kingsoftcloud/provider-ksyun/config/eip"
 	"github.com/kingsoftcloud/provider-ksyun/config/kcm"
@@ -46,6 +47,7 @@ func GetProvider() *ujconfig.Provider {
 		ebs.Configure,
 		slb.Configure,
 		kcm.Configure,
+		alb.Configure,
 	} {
 		configure(pc)
 	}

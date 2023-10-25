@@ -73,7 +73,7 @@ spec:
                     description: The id of the volume.
                     type: string
                   attachVolumeIdRef:
-                    description: Reference to a Volume in kec to populate attachVolumeId.
+                    description: Reference to a Volume in ebs to populate attachVolumeId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -107,7 +107,7 @@ spec:
                     - name
                     type: object
                   attachVolumeIdSelector:
-                    description: Selector for a Volume in kec to populate attachVolumeId.
+                    description: Selector for a Volume in ebs to populate attachVolumeId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the

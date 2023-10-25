@@ -77,7 +77,7 @@ func Configure(p *config.Provider) {
 		}
 
 		r.References["attach_volume_id"] = config.Reference{
-			Type: "github.com/kingsoftcloud/provider-ksyun/apis/kec/v1alpha1.Volume",
+			Type: "github.com/kingsoftcloud/provider-ksyun/apis/ebs/v1alpha1.Volume",
 		}
 	})
 

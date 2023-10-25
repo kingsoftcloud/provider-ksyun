@@ -74,15 +74,15 @@ type HealthcheckParameters struct {
 	IsDefaultHostName *bool `json:"isDefaultHostName,omitempty" tf:"is_default_host_name,omitempty"`
 
 	// The id of the listener.
-	// +crossplane:generate:reference:type=github.com/kingsoftcloud/provider-ksyun/apis/slb/v1alpha1.Alb
+	// +crossplane:generate:reference:type=github.com/kingsoftcloud/provider-ksyun/apis/slb/v1alpha1.LbListener
 	// +kubebuilder:validation:Optional
 	ListenerID *string `json:"listenerId,omitempty" tf:"listener_id,omitempty"`
 
-	// Reference to a Alb in slb to populate listenerId.
+	// Reference to a LbListener in slb to populate listenerId.
 	// +kubebuilder:validation:Optional
 	ListenerIDRef *v1.Reference `json:"listenerIdRef,omitempty" tf:"-"`
 
-	// Selector for a Alb in slb to populate listenerId.
+	// Selector for a LbListener in slb to populate listenerId.
 	// +kubebuilder:validation:Optional
 	ListenerIDSelector *v1.Selector `json:"listenerIdSelector,omitempty" tf:"-"`
 

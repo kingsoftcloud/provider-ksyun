@@ -8,7 +8,8 @@ package v1alpha1
 import (
 	"context"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
-	v1alpha1 "github.com/kingsoftcloud/provider-ksyun/apis/vpc/v1alpha1"
+	v1alpha1 "github.com/kingsoftcloud/provider-ksyun/apis/ebs/v1alpha1"
+	v1alpha11 "github.com/kingsoftcloud/provider-ksyun/apis/vpc/v1alpha1"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -26,8 +27,8 @@ func (mg *AutoSnapshotVolumeAssociation) ResolveReferences(ctx context.Context, 
 		Reference:    mg.Spec.ForProvider.AttachVolumeIDRef,
 		Selector:     mg.Spec.ForProvider.AttachVolumeIDSelector,
 		To: reference.To{
-			List:    &VolumeList{},
-			Managed: &Volume{},
+			List:    &v1alpha1.VolumeList{},
+			Managed: &v1alpha1.Volume{},
 		},
 	})
 	if err != nil {
@@ -85,8 +86,8 @@ func (mg *Instance) ResolveReferences(ctx context.Context, c client.Reader) erro
 		References:    mg.Spec.ForProvider.SecurityGroupIDRefs,
 		Selector:      mg.Spec.ForProvider.SecurityGroupIDSelector,
 		To: reference.To{
-			List:    &v1alpha1.SecurityGroupList{},
-			Managed: &v1alpha1.SecurityGroup{},
+			List:    &v1alpha11.SecurityGroupList{},
+			Managed: &v1alpha11.SecurityGroup{},
 		},
 	})
 	if err != nil {
@@ -101,8 +102,8 @@ func (mg *Instance) ResolveReferences(ctx context.Context, c client.Reader) erro
 		Reference:    mg.Spec.ForProvider.SubnetIDRef,
 		Selector:     mg.Spec.ForProvider.SubnetIDSelector,
 		To: reference.To{
-			List:    &v1alpha1.SubnetList{},
-			Managed: &v1alpha1.Subnet{},
+			List:    &v1alpha11.SubnetList{},
+			Managed: &v1alpha11.Subnet{},
 		},
 	})
 	if err != nil {
