@@ -17,7 +17,7 @@ env:
   # Common users. We can't run a step 'if secrets.XXX != ""' but we can run a
   # step 'if env.XXX != ""', so we copy these to succinctly test whether
   # credentials have been provided before trying to run steps that need them.
-  UPBOUND_MARKETPLACE_PUSH_ROBOT_USR: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
+  UPBOUND_MARKETPLACE_PUSH_ROBOT_USR: ${{ env.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
 
 jobs:
   detect-noop:
@@ -261,7 +261,7 @@ jobs:
         if: env.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR != ''
         with:
           registry: xpkg.upbound.io
-          username: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
+          username: ${{ env.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
           password: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
 
       - name: Checkout
