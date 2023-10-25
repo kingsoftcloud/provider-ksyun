@@ -204,7 +204,7 @@ spec:
                     description: The ID of the LB.
                     type: string
                   loadBalancerIdRef:
-                    description: Reference to a Lb in slb to populate loadBalancerId.
+                    description: Reference to a LB in slb to populate loadBalancerId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -238,7 +238,7 @@ spec:
                     - name
                     type: object
                   loadBalancerIdSelector:
-                    description: Selector for a Lb in slb to populate loadBalancerId.
+                    description: Selector for a LB in slb to populate loadBalancerId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
