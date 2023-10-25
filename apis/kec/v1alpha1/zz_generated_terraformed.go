@@ -13,6 +13,154 @@ import (
 	"github.com/upbound/upjet/pkg/resource/json"
 )
 
+// GetTerraformResourceType returns Terraform resource type for this AutoSnapshotPolicy
+func (mg *AutoSnapshotPolicy) GetTerraformResourceType() string {
+	return "ksyun_auto_snapshot_policy"
+}
+
+// GetConnectionDetailsMapping for this AutoSnapshotPolicy
+func (tr *AutoSnapshotPolicy) GetConnectionDetailsMapping() map[string]string {
+	return nil
+}
+
+// GetObservation of this AutoSnapshotPolicy
+func (tr *AutoSnapshotPolicy) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this AutoSnapshotPolicy
+func (tr *AutoSnapshotPolicy) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this AutoSnapshotPolicy
+func (tr *AutoSnapshotPolicy) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this AutoSnapshotPolicy
+func (tr *AutoSnapshotPolicy) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this AutoSnapshotPolicy
+func (tr *AutoSnapshotPolicy) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this AutoSnapshotPolicy using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *AutoSnapshotPolicy) LateInitialize(attrs []byte) (bool, error) {
+	params := &AutoSnapshotPolicyParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *AutoSnapshotPolicy) GetTerraformSchemaVersion() int {
+	return 0
+}
+
+// GetTerraformResourceType returns Terraform resource type for this AutoSnapshotVolumeAssociation
+func (mg *AutoSnapshotVolumeAssociation) GetTerraformResourceType() string {
+	return "ksyun_auto_snapshot_volume_association"
+}
+
+// GetConnectionDetailsMapping for this AutoSnapshotVolumeAssociation
+func (tr *AutoSnapshotVolumeAssociation) GetConnectionDetailsMapping() map[string]string {
+	return nil
+}
+
+// GetObservation of this AutoSnapshotVolumeAssociation
+func (tr *AutoSnapshotVolumeAssociation) GetObservation() (map[string]any, error) {
+	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(o, &base)
+}
+
+// SetObservation for this AutoSnapshotVolumeAssociation
+func (tr *AutoSnapshotVolumeAssociation) SetObservation(obs map[string]any) error {
+	p, err := json.TFParser.Marshal(obs)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
+}
+
+// GetID returns ID of underlying Terraform resource of this AutoSnapshotVolumeAssociation
+func (tr *AutoSnapshotVolumeAssociation) GetID() string {
+	if tr.Status.AtProvider.ID == nil {
+		return ""
+	}
+	return *tr.Status.AtProvider.ID
+}
+
+// GetParameters of this AutoSnapshotVolumeAssociation
+func (tr *AutoSnapshotVolumeAssociation) GetParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
+// SetParameters for this AutoSnapshotVolumeAssociation
+func (tr *AutoSnapshotVolumeAssociation) SetParameters(params map[string]any) error {
+	p, err := json.TFParser.Marshal(params)
+	if err != nil {
+		return err
+	}
+	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// LateInitialize this AutoSnapshotVolumeAssociation using its observed tfState.
+// returns True if there are any spec changes for the resource.
+func (tr *AutoSnapshotVolumeAssociation) LateInitialize(attrs []byte) (bool, error) {
+	params := &AutoSnapshotVolumeAssociationParameters{}
+	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
+		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
+	}
+	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
+
+	li := resource.NewGenericLateInitializer(opts...)
+	return li.LateInitialize(&tr.Spec.ForProvider, params)
+}
+
+// GetTerraformSchemaVersion returns the associated Terraform schema version
+func (tr *AutoSnapshotVolumeAssociation) GetTerraformSchemaVersion() int {
+	return 0
+}
+
 // GetTerraformResourceType returns Terraform resource type for this DataGuardGroup
 func (mg *DataGuardGroup) GetTerraformResourceType() string {
 	return "ksyun_data_guard_group"

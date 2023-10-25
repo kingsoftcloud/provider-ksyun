@@ -8,8 +8,12 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/kingsoftcloud/provider-ksyun/config/alb"
+	"github.com/kingsoftcloud/provider-ksyun/config/ebs"
 	"github.com/kingsoftcloud/provider-ksyun/config/eip"
+	"github.com/kingsoftcloud/provider-ksyun/config/kcm"
 	"github.com/kingsoftcloud/provider-ksyun/config/kec"
+	"github.com/kingsoftcloud/provider-ksyun/config/slb"
 	"github.com/kingsoftcloud/provider-ksyun/config/vpc"
 	ujconfig "github.com/upbound/upjet/pkg/config"
 )
@@ -40,6 +44,10 @@ func GetProvider() *ujconfig.Provider {
 		vpc.Configure,
 		kec.Configure,
 		eip.Configure,
+		ebs.Configure,
+		slb.Configure,
+		kcm.Configure,
+		alb.Configure,
 	} {
 		configure(pc)
 	}
