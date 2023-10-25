@@ -7,7 +7,7 @@ PROJECT_REPO ?= github.com/kingsoftcloud/$(PROJECT_NAME)
 export TERRAFORM_VERSION ?= 1.4.6
 
 export TERRAFORM_PROVIDER_SOURCE ?= kingsoftcloud/ksyun
-export TERRAFORM_PROVIDER_REPO ?= git@github.com:kingsoftcloud/terraform-provider-ksyun.git
+export TERRAFORM_PROVIDER_REPO ?= https://github.com/kingsoftcloud/terraform-provider-ksyun.git
 export TERRAFORM_PROVIDER_VERSION ?= 1.9.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-ksyun
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
