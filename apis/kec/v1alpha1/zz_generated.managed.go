@@ -7,6 +7,158 @@ package v1alpha1
 
 import xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 
+// GetCondition of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) GetDeletionPolicy() xpv1.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicy of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) GetManagementPolicy() xpv1.ManagementPolicy {
+	return mg.Spec.ManagementPolicy
+}
+
+// GetProviderConfigReference of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) GetProviderConfigReference() *xpv1.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+/*
+GetProviderReference of this AutoSnapshotPolicy.
+Deprecated: Use GetProviderConfigReference.
+*/
+func (mg *AutoSnapshotPolicy) GetProviderReference() *xpv1.Reference {
+	return mg.Spec.ProviderReference
+}
+
+// GetPublishConnectionDetailsTo of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicy of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) SetManagementPolicy(r xpv1.ManagementPolicy) {
+	mg.Spec.ManagementPolicy = r
+}
+
+// SetProviderConfigReference of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) SetProviderConfigReference(r *xpv1.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+/*
+SetProviderReference of this AutoSnapshotPolicy.
+Deprecated: Use SetProviderConfigReference.
+*/
+func (mg *AutoSnapshotPolicy) SetProviderReference(r *xpv1.Reference) {
+	mg.Spec.ProviderReference = r
+}
+
+// SetPublishConnectionDetailsTo of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this AutoSnapshotPolicy.
+func (mg *AutoSnapshotPolicy) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) GetDeletionPolicy() xpv1.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicy of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) GetManagementPolicy() xpv1.ManagementPolicy {
+	return mg.Spec.ManagementPolicy
+}
+
+// GetProviderConfigReference of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) GetProviderConfigReference() *xpv1.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+/*
+GetProviderReference of this AutoSnapshotVolumeAssociation.
+Deprecated: Use GetProviderConfigReference.
+*/
+func (mg *AutoSnapshotVolumeAssociation) GetProviderReference() *xpv1.Reference {
+	return mg.Spec.ProviderReference
+}
+
+// GetPublishConnectionDetailsTo of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicy of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) SetManagementPolicy(r xpv1.ManagementPolicy) {
+	mg.Spec.ManagementPolicy = r
+}
+
+// SetProviderConfigReference of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) SetProviderConfigReference(r *xpv1.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+/*
+SetProviderReference of this AutoSnapshotVolumeAssociation.
+Deprecated: Use SetProviderConfigReference.
+*/
+func (mg *AutoSnapshotVolumeAssociation) SetProviderReference(r *xpv1.Reference) {
+	mg.Spec.ProviderReference = r
+}
+
+// SetPublishConnectionDetailsTo of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this AutoSnapshotVolumeAssociation.
+func (mg *AutoSnapshotVolumeAssociation) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this DataGuardGroup.
 func (mg *DataGuardGroup) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
