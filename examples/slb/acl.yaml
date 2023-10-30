@@ -1,0 +1,34 @@
+apiVersion: slb.kingsoftcloud.io/v1alpha1
+kind: LbAcl
+metadata:
+  name: example-slb-acl
+spec:
+  forProvider:
+    loadBalancerAclName: "test-crossplane-slb-acl"
+    ipVersion: "ipv4"
+
+---
+apiVersion: slb.kingsoftcloud.io/v1alpha1
+kind: LbAclEntry
+metadata:
+  name: example-slb-acl-entry
+spec:
+  forProvider:
+    loadBalancerAclIdRef:
+      name: example-slb-acl
+    cidrBlock: "192.168.1.1/32"
+    ruleNumber: 10
+    ruleAction: "allow"
+    protocol: "ip"
+
+---
+apiVersion: slb.kingsoftcloud.io/v1alpha1
+kind: LbListenerAssociateAcl
+metadata:
+  name: example-slb-acl
+spec:
+  forProvider:
+    listenerIdRef:
+      name: example-slb-listener
+    loadBalancerAclIdRef:
+      name: example-slb-acl

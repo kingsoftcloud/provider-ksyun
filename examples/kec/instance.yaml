@@ -1,7 +1,7 @@
 apiVersion: kec.kingsoftcloud.io/v1alpha1
 kind: Instance
 metadata:
-  name: example-kec-1
+  name: example-kec
 spec:
   forProvider:
     instanceName: "test-crossplane-kec"
@@ -11,6 +11,6 @@ spec:
     chargeType: "Daily"
     purchaseTime: 1
     subnetIdRef:
-      name: "example-kec-subnet-1"
+      name: "example-kec-subnet"
     securityGroupIdRefs:
-      - name: "example-kec-security-group-1"
+      - name: "example-kec-security-group"

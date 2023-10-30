@@ -1,0 +1,10 @@
+apiVersion: slb.kingsoftcloud.io/v1alpha1
+kind: LB
+metadata:
+  name: example-slb
+spec:
+  forProvider:
+    loadBalancerName: "test-crossplane-slb"
+    type: "public"
+    vpcIdRef:
+      name: "example-slb-vpc"
