@@ -58,17 +58,17 @@ UPTEST_VERSION = v0.5.0
 # ====================================================================================
 # Setup Images
 
-REGISTRY_ORGS ?= xpkg.upbound.io/notone
+REGISTRY_ORGS ?= xpkg.upbound.io/kingsoftcloud
 IMAGES = $(PROJECT_NAME)
 -include build/makelib/imagelight.mk
 
 # ====================================================================================
 # Setup XPKG
 
-XPKG_REG_ORGS ?= xpkg.upbound.io/notone
+XPKG_REG_ORGS ?= xpkg.upbound.io/kingsoftcloud
 # NOTE(hasheddan): skip promoting on xpkg.upbound.io as channel tags are
 # inferred.
-XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/notone
+XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/kingsoftcloud
 XPKGS = $(PROJECT_NAME)
 -include build/makelib/xpkg.mk
 

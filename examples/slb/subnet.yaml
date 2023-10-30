@@ -1,12 +1,12 @@
 apiVersion: vpc.kingsoftcloud.io/v1alpha1
 kind: Subnet
 metadata:
-  name: example-kec-subnet
+  name: example-slb-subnet
 spec:
   forProvider:
     availabilityZone: "cn-guangzhou-1a"
     cidrBlock: "10.1.2.0/24"
-    subnetName: "test-crossplane-kec-subnet"
+    subnetName: "test-crossplane-slb-subnet"
     subnetType: "Normal"
     vpcIdRef:
-      name: "example-kec-vpc"
+      name: "example-slb-vpc"

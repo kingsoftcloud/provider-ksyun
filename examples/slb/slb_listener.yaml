@@ -1,0 +1,18 @@
+apiVersion: slb.kingsoftcloud.io/v1alpha1
+kind: LbListener
+metadata:
+  name: example-slb-listener
+spec:
+  forProvider:
+    listenerName: "test-crossplane-slb-listener"
+    listenerPort: 8080
+    listenerProtocol: "HTTP"
+    listenerState: "start"
+    method: "RoundRobin"
+    session:
+      -
+       sessionState: "start"
+       sessionPersistencePeriod: 100
+       cookieType: "ImplantCookie"
+    loadBalancerIdRef:
+      name: example-slb

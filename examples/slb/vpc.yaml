@@ -1,8 +1,8 @@
 apiVersion: vpc.kingsoftcloud.io/v1alpha1
 kind: VPC
 metadata:
-  name: example-kec-vpc
+  name: example-slb-vpc
 spec:
   forProvider:
     cidrBlock: "10.1.0.0/16"
-    vpcName: "test-crossplane-kec-vpc"
+    vpcName: "test-crossplane-slb-vpc"

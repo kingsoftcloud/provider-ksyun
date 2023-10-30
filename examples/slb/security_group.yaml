@@ -1,0 +1,9 @@
+apiVersion: vpc.kingsoftcloud.io/v1alpha1
+kind: SecurityGroup
+metadata:
+  name: example-slb-security-group
+spec:
+  forProvider:
+    securityGroupName: "test-crossplane-slb-security-group"
+    vpcIdRef:
+      name: "example-slb-vpc"
