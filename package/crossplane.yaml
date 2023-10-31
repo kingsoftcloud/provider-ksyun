@@ -4,7 +4,7 @@ metadata:
   name: provider-ksyun
   annotations:
     meta.crossplane.io/maintainer: <LUSONGKE@kingsoft.com>
-    meta.crossplane.io/source: github.com/notone0010/provider-ksyun
+    meta.crossplane.io/source: github.com/kingsoftcloud/provider-ksyun
     meta.crossplane.io/description: |
       A Crossplane provider that exposes managed resources for the Ksyun API.
     meta.crossplane.io/readme: |
