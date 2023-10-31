@@ -11,5 +11,5 @@ metadata:
       `provider-ksyun` is the Crossplane infrastructure provider for the [Ksyun](https://www.ksyun.com/).
       If you encounter an issue please reach out on
       [slack.crossplane.io](https://slack.crossplane.io) and create an issue in
-      the [notone/provider-ksyun](https://github.com/notone0010/provider-ksyun)
+      the [kingsoftcloud/provider-ksyun](https://github.com/kingsoftcloud/provider-ksyun)
       repo.
