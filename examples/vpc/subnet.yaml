@@ -9,4 +9,4 @@ spec:
     subnetName: "test-crossplane-subnet"
     subnetType: "Normal"
     vpcIdRef:
-      name: "example-vpc-1"
+      name: "example-vpc"

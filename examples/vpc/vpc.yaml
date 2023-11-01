@@ -1,7 +1,7 @@
 apiVersion: vpc.kingsoftcloud.io/v1alpha1
 kind: VPC
 metadata:
-  name: example-vpc-1
+  name: example-vpc
 spec:
   forProvider:
     cidrBlock: "10.1.0.0/16"
